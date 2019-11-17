@@ -20,8 +20,6 @@ public plugin_init(){
 
     InitCvars();
     LoadMessages();
-
-    server_print("[%s v%s] %d advert messages loaded.", PLUG_NAME, PLUG_VER, ArraySize(MessagesList));
 }
 
 public plugin_cfg(){
@@ -38,11 +36,18 @@ public Task_WriteMessage(){
         LastMsgId = 0;
 
     static Msg[MSG_LENGTH]; ArrayGetString(MessagesList, LastMsgId, Msg, charsmax(Msg));
+    FormatMessage(Msg);
     for(new UserId = 1; UserId <= MAX_PLAYERS; UserId++)
         if(is_user_connected(UserId))
             client_print_color(UserId, print_team_default, fmt("%s %s", CHAT_PREFIX, Msg));
     
     set_task(MessagesDelay, "Task_WriteMessage");
+}
+
+FormatMessage(Msg[MSG_LENGTH]){
+    replace_all(Msg, MSG_LENGTH, "%3%", "^3");
+    replace_all(Msg, MSG_LENGTH, "%1%", "^1");
+    replace_all(Msg, MSG_LENGTH, "%4%", "^4");
 }
 
 InitCvars(){
@@ -80,4 +85,5 @@ LoadMessages(){
         json_array_get_string(List, i, Msg, charsmax(Msg));
         ArrayPushString(MessagesList, Msg);
     }
+    server_print("[%s v%s] %d advert messages loaded.", PLUG_NAME, PLUG_VER, ArraySize(MessagesList));
 }
