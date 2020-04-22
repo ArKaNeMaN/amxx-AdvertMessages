@@ -18,7 +18,7 @@ new Array:MessagesList;
 new LastMsgId;
 
 new const PLUG_NAME[] = "Advert Messages";
-new const PLUG_VER[] = "1.0.0";
+new const PLUG_VER[] = "1.1.0";
 
 public plugin_init(){
     register_plugin(PLUG_NAME, PLUG_VER, "ArKaNeMaN");
