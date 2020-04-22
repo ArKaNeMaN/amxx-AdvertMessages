@@ -3,11 +3,18 @@
 
 #pragma semicolon 1
 
+#define Cvar(%1) Cvars[Cvar_%1]
+
 const MSG_LENGTH = 189;
-new const CHAT_PREFIX[] = "^4[^3Advert^4]^3";
+
+enum E_Cvars{
+    Float:Cvar_Delay,
+    Cvar_Prefix[32],
+}
+
+new Cvars[E_Cvars];
 
 new Array:MessagesList;
-new Float:MessagesDelay;
 new LastMsgId;
 
 new const PLUG_NAME[] = "Advert Messages";
@@ -20,10 +27,8 @@ public plugin_init(){
 
     InitCvars();
     LoadMessages();
-}
 
-public plugin_cfg(){
-    set_task(MessagesDelay, "Task_WriteMessage");
+    set_task(Cvar(Delay), "Task_WriteMessage");
 }
 
 public SrvCmd_ReloadConfig(){
@@ -36,12 +41,13 @@ public Task_WriteMessage(){
         LastMsgId = 0;
 
     static Msg[MSG_LENGTH]; ArrayGetString(MessagesList, LastMsgId, Msg, charsmax(Msg));
+    format(Msg, charsmax(Msg), "%s %s", Cvar(Prefix), Msg);
     FormatMessage(Msg);
     for(new UserId = 1; UserId <= MAX_PLAYERS; UserId++)
         if(is_user_connected(UserId))
-            client_print_color(UserId, print_team_default, fmt("%s %s", CHAT_PREFIX, Msg));
+            client_print_color(UserId, print_team_default, Msg);
     
-    set_task(MessagesDelay, "Task_WriteMessage");
+    set_task(Cvar(Delay), "Task_WriteMessage");
 }
 
 FormatMessage(Msg[MSG_LENGTH]){
@@ -52,10 +58,17 @@ FormatMessage(Msg[MSG_LENGTH]){
 
 InitCvars(){
     bind_pcvar_float(create_cvar(
-        "AdvertMessages_MessagesDelay", "30.0", FCVAR_NONE,
-        "Интервал между рекламными сообщениями",
-        true, 5.0
-    ), MessagesDelay);
+        "AdvertMessages_Delay",
+        "30.0", FCVAR_NONE,
+        "Интервал между сообщениями",
+        true, 1.0
+    ), Cvar(Delay));
+    
+    bind_pcvar_string(create_cvar(
+        "AdvertMessages_Prefix",
+        "!g[!tAdvert!g]!t", FCVAR_NONE,
+        "Префикс информационных сообщений"
+    ), Cvar(Prefix), charsmax(Cvar(Prefix)));
 
     AutoExecConfig(true, "Cvars", "AdvertMessages");
 }
