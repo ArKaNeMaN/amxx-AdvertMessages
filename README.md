@@ -7,19 +7,18 @@
 AmxModX 1.9.0 или выше
 
 ## Настройка
-### Текст сообщений
-#### Файл
+### Список сообщений
 `amxmodx/configs/plugins/AdvertMessages/Messages.json`
-#### Структура
+
 ```json
 [
-    "Рекламное сообщение",
+    "Рекламное сообщение [!nЖёлтый !gЗелёный !tКомандный]",
     "..."
 ]
 ```
 
 ### Квары
-#### Файл
 `amxmodx/configs/plugins/AdvertMessages/Cvars.cfg`
-#### Список
-- `AdvertMessages_MessagesDelay` - Интервал меду сообщениями в секундах. (По умолчанию: 30.0)
+#### **`AdvertMessages_MessagesDelay`**
+- Интервал меду сообщениями в секундах.
+- По умолчанию: 30.0
