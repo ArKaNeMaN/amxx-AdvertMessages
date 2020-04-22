@@ -45,9 +45,9 @@ public Task_WriteMessage(){
 }
 
 FormatMessage(Msg[MSG_LENGTH]){
-    replace_all(Msg, MSG_LENGTH, "%3%", "^3");
-    replace_all(Msg, MSG_LENGTH, "%1%", "^1");
-    replace_all(Msg, MSG_LENGTH, "%4%", "^4");
+    replace_all(Msg, MSG_LENGTH, "!t", "^3");
+    replace_all(Msg, MSG_LENGTH, "!n", "^1");
+    replace_all(Msg, MSG_LENGTH, "!g", "^4");
 }
 
 InitCvars(){
